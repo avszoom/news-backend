@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc -p ."
   },
   "keywords": [],
@@ -15,11 +15,14 @@
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.11.19",
+    "nodemon": "^3.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "dotenv": "^16.4.4",
+    "express": "^4.18.2",
+    "newsapi": "^2.4.1"
   }
 }
