@@ -9,12 +9,14 @@ export default class NewsAPI {
         this.news_obj = new NewsAPILibrary(process.env.NEWS_API_KEY);
     } 
 
-    public async getTodaysNews(): Promise<Array<News>>  {
+    public async getTodaysNews(fromDate: string, toDate: string): Promise<Array<News>>  {
+        console.log(fromDate);
+        console.log(toDate);
         const resp = await this.news_obj.v2.everything({
             sources: 'bbc-news,the-verge',
             domains: 'bbc.co.uk, techcrunch.com',
-            from: getPastDate(1),
-            to: getCurrentDate(),
+            from: fromDate,
+            to: toDate,
             language: 'en',
             sortBy: 'relevancy',
             page: 2

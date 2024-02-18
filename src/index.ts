@@ -15,7 +15,9 @@ app.get('/', (req, res) => {
 //TODO - call an api, and fetch top 100 news
 app.get('/news',async (req,res) => {
   const news = new NewsAPI();
-  const articles = await news.getTodaysNews();
+  const fromDate = req.query.fromDate as string;
+  const toDate = req.query.toDate as string;
+  const articles = await news.getTodaysNews(fromDate,toDate);
   res.send(articles);
 });
 
