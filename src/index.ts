@@ -20,7 +20,11 @@ app.get('/news',async (req,res) => {
 });
 
 //insert into database
-app.get('/cron', updateDatabase);
+app.get('/cron', async (req,res) => {
+  await updateDatabase();
+  res.send("inserted");
+}
+);
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);

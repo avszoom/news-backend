@@ -6,11 +6,14 @@ type PublishTime = {
 };
 
 export async function insertNews(news: Array<News>) {
-    news.forEach(async (news) => {
-        await sql`INSERT INTO news (source, author, title, short_desc, article_url,media_url,
-            content,publish_time) VALUES (${news.source}, ${news.author}, ${news.title}, ${news.short_desc}, ${news.article_url}
-                ,${news.media_url},${news.content},${news.publish_time})`;
-    });
+    await sql.query(
+        `INSERT INTO news (source, author, title, short_desc, article_url,media_url,
+            content,publish_time)
+         SELECT source, author, title, short_desc, article_url,media_url,
+         content,publish_time FROM json_populate_recordset(NULL::news, $1)`,
+        [JSON.stringify(news)]
+      );
+    console.log("inserted");
 }
 
 export async function lastInsertedRecordTime(): Promise<string> {
