@@ -1,5 +1,7 @@
 import express from 'express';
 import NewsAPI from './apis/fetchNews';
+import News from './model/News';
+import { fetchNews, insertNews, lastInsertedRecordTime } from './orm/orm';
 //initialize
 require('dotenv').config();
 const app = express();
@@ -14,11 +16,19 @@ app.get('/', (req, res) => {
 
 //TODO - call an api, and fetch top 100 news
 app.get('/news',async (req,res) => {
-  const news = new NewsAPI();
-  const fromDate = req.query.fromDate as string;
-  const toDate = req.query.toDate as string;
-  const articles = await news.getTodaysNews(fromDate,toDate);
+  const articles = await fetchNews(100);
   res.send(articles);
+});
+
+//insert into database
+app.get('/updateDatabase', async (req,res) => {
+  const lastRecordTime = await lastInsertedRecordTime();
+  const news = new NewsAPI();
+  const fromDate = lastRecordTime;
+  const toDate = "";
+  const articles = await news.getTodaysNews(fromDate,toDate);
+  await insertNews(articles);
+  res.send(`Records inserted ${articles.length}`)
 });
 
 app.listen(port, () => {
