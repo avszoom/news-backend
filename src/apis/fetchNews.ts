@@ -10,15 +10,12 @@ export default class NewsAPI {
     } 
 
     public async getTodaysNews(fromDate: string, toDate: string): Promise<Array<News>>  {
-        console.log(fromDate);
-        console.log(toDate);
         const resp = await this.news_obj.v2.everything({
-            sources: 'bbc-news,the-verge',
-            domains: 'bbc.co.uk, techcrunch.com',
+            sources: 'google-news,bbc-news,the-verge,the-times-of-india,cbs-news',
             from: fromDate,
             to: toDate,
             language: 'en',
-            sortBy: 'relevancy',
+            sortBy: 'publishedAt',
             page: 2
           });
         const news = resp.articles.map((article: any) => {
