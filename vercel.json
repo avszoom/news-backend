@@ -1,9 +1,9 @@
 {
-    "rewrites": [{"source": "/(.*)", "destination": "/api"}],
-    "crons": [
-        {
-          "path": "/api/updateDatabase",
-          "schedule": "*/2 * * * *"
-        }
-    ]
+    "rewrites": [{"source": "/(.*)", "destination": "/api"}]
+    // "crons": [
+    //     {
+    //       "path": "/api/updateDatabase",
+    //       "schedule": "*/2 * * * *"
+    //     }
+    // ]
 }
