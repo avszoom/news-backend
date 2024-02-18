@@ -13,8 +13,8 @@ export default class NewsAPI {
         const resp = await this.news_obj.v2.everything({
             sources: 'bbc-news,the-verge',
             domains: 'bbc.co.uk, techcrunch.com',
-            from: getPastDate(1),
-            to: getCurrentDate(),
+            from: '2024-02-16',
+            to: '2024-02-17',
             language: 'en',
             sortBy: 'relevancy',
             page: 2
