@@ -1,7 +1,6 @@
 import express from 'express';
-import NewsAPI from './apis/fetchNews';
-import News from './model/News';
-import { fetchNews, insertNews, lastInsertedRecordTime } from './orm/orm';
+import { fetchNews} from './orm/orm';
+import updateDatabase from './cron/cron';
 //initialize
 require('dotenv').config();
 const app = express();
@@ -21,15 +20,7 @@ app.get('/news',async (req,res) => {
 });
 
 //insert into database
-app.get('/updateDatabase', async (req,res) => {
-  const lastRecordTime = await lastInsertedRecordTime();
-  const news = new NewsAPI();
-  const fromDate = lastRecordTime;
-  const toDate = "";
-  const articles = await news.getTodaysNews(fromDate,toDate);
-  await insertNews(articles);
-  res.send(`Records inserted ${articles.length}`)
-});
+app.get('/cron', updateDatabase);
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`);
