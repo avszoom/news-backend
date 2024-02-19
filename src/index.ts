@@ -16,6 +16,11 @@ app.get('/', (req, res) => {
 //TODO - call an api, and fetch top 100 news
 app.get('/news',async (req,res) => {
   console.log("received a new request");
+  const systemKey = req.headers['news-id'];
+  if(!systemKey || systemKey != 'nrs323217'){
+    res.status(401).send('You are not authorized for this api');
+    return;
+  }
   const articles = await fetchNews(1000);
   res.send(articles);
 });
@@ -25,6 +30,7 @@ app.get('/cron', async (req,res) => {
   const systemKey = req.headers['system-id'];
   if(!systemKey || systemKey != 'zwe898232'){
     res.status(401).send('You are not authorized to run this job');
+    return;
   }
   // fetch new record and insert
   await updateDatabase();
