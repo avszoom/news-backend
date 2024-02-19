@@ -1,6 +1,6 @@
 import express from 'express';
-import { fetchNews} from './orm/orm';
-import updateDatabase from './cron/cron';
+import { deleteRecords, fetchNews} from './orm/orm';
+import {removedOldArticles, updateDatabase} from './cron/cron';
 //initialize
 require('dotenv').config();
 const app = express();
@@ -21,8 +21,15 @@ app.get('/news',async (req,res) => {
 
 //insert into database
 app.get('/cron', async (req,res) => {
+  const systemKey = req.headers['system-id'];
+  if(!systemKey || systemKey != 'zwe898232'){
+    res.status(401).send('You are not authorized to run this job');
+  }
+  // fetch new record and insert
   await updateDatabase();
-  res.send("inserted");
+  //remove old records
+  await removedOldArticles();
+  res.send("succeeded.");
 }
 );
 

@@ -27,3 +27,8 @@ export async function fetchNews(news_count: number): Promise<News[]> {
     const articles = await sql<News>`select * from news order by publish_time desc limit ${news_count}`;
     return articles.rows;
 }
+
+export async function deleteRecords(publish_time: string): Promise<number> {
+    const recordDeleted = await sql`delete from news where publish_time < ${publish_time}`;
+    return recordDeleted.rowCount;
+}
