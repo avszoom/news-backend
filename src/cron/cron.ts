@@ -8,6 +8,7 @@ export async function updateDatabase(): Promise<number> {
     const fromDate = lastRecordTime;
     const toDate = "";
     const articles = await news.getTodaysNews(fromDate,toDate);
+    //update short_desc with gen AI summary
     await insertNews(articles);
     return articles.length;
 }
