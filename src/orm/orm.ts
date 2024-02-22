@@ -28,7 +28,16 @@ export async function fetchNews(news_count: number): Promise<News[]> {
     return articles.rows;
 }
 
-export async function deleteRecords(publish_time: string): Promise<number> {
-    const recordDeleted = await sql`delete from news where publish_time < ${publish_time}`;
+export async function deleteRecords(rowsToKeep: number): Promise<number> {
+    const recordDeleted = await sql`delete from news
+    WHERE news.id NOT IN (
+        SELECT id
+        FROM (
+            SELECT id
+            FROM news
+            ORDER BY publish_time DESC
+            LIMIT ${rowsToKeep}
+        ) AS subquery
+    );`;
     return recordDeleted.rowCount;
 }

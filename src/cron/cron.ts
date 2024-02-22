@@ -14,10 +14,10 @@ export async function updateDatabase(): Promise<number> {
 }
 
 export async function removedOldArticles(): Promise<number> {
-    const lastRecordTime = await lastInsertedRecordTime();
-    const timeToStartDelete = getPastTime(lastRecordTime,1);
-    console.log(lastRecordTime);
-    console.log(timeToStartDelete);
-    const deletedArticles = await deleteRecords(timeToStartDelete);
+    // const lastRecordTime = await lastInsertedRecordTime();
+    // const timeToStartDelete = getPastTime(lastRecordTime,1);
+    // console.log(lastRecordTime);
+    // console.log(timeToStartDelete);
+    const deletedArticles = await deleteRecords(500);
     return deletedArticles;
 }
