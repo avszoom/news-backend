@@ -1,6 +1,5 @@
 const NewsAPILibrary = require('newsapi');
 import News from "../model/News";
-import {getCurrentDate, getPastDate} from '../utils/dateLib';
 
 export default class NewsAPI {
     private news_obj;
