@@ -11,7 +11,7 @@ export default class NewsAPI {
 
     public async getTodaysNews(fromDate: string, toDate: string): Promise<Array<News>>  {
         const resp = await this.news_obj.v2.everything({
-            sources: 'google-news,bbc-news,the-verge,the-times-of-india,cbs-news,cnn,espn,fox-news,the-verge',
+            sources: 'google-news,the-verge,the-times-of-india,espn',
             from: fromDate,
             to: toDate,
             language: 'en',
