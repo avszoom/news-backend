@@ -43,8 +43,8 @@ export async function deleteRecords(rowsToKeep: number): Promise<number> {
     return recordDeleted.rowCount;
 }
 
-export async function fetchNewsWhichNeedToBeUpdated() : Promise<News[]> {
-    const articles = await sql<News>`select * from news where is_updated = 0 order by id desc`;
+export async function fetchNewsWhichNeedToBeUpdated(records: number) : Promise<News[]> {
+    const articles = await sql<News>`select * from news where is_updated = 0 order by id desc limit ${records}`;
     return articles.rows;
 }
 
