@@ -1,3 +1,4 @@
+import { ArticleMetaData } from "../apis/fetchMetaData";
 import News from "../model/News";
 import { sql } from '@vercel/postgres';
 
@@ -40,4 +41,17 @@ export async function deleteRecords(rowsToKeep: number): Promise<number> {
         ) AS subquery
     );`;
     return recordDeleted.rowCount;
+}
+
+export async function fetchNewsWhichNeedToBeUpdated() : Promise<News[]> {
+    const articles = await sql<News>`select * from news where is_updated = 0 order by id desc`;
+    return articles.rows;
+}
+
+export async function enrichArticle(article:ArticleMetaData) {
+    await sql
+        `update news
+        set title=${article.title}, short_desc=${article.desc},country=${article.country},
+        is_updated=1 where id=${article.id}`;
+    console.log("inserted");
 }

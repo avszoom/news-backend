@@ -1,10 +1,7 @@
 import express from 'express';
-import {fetchNews} from './orm/orm';
+import {enrichArticle, fetchNews, fetchNewsWhichNeedToBeUpdated} from './orm/orm';
 import {removedOldArticles, updateDatabase} from './cron/cron';
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-// es6 module
-
+import fetchMetaData from './apis/fetchMetaData';
 
 //initialize
 require('dotenv').config();
@@ -46,23 +43,18 @@ app.get('/cron', async (req,res) => {
 );
 
 app.get('/enrichArticles', async (req,res) => {
-  const key = process.env.GOOGLE_API_KEY ?? "";
-  const genAI = new GoogleGenerativeAI(key);
-  const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-  const title = "Jayo Archer, Motocross star and X Games medalist, dies at 27 - ESPN"
-  const desc = `Freestyle motocross athlete Jayden "Jayo" Archer, an X Games medalist and the first rider 
-  to perform a triple backflip in competition, died Wednesday morning in Melbourne, Australia. He was 27.`
-  const long_desc = `Freestyle motocross athlete Jayden "Jayo" Archer, an X Games medalist and the first rider to perform a triple backflip in competition, 
-  died while practicing the trick Wednesday morning in his hometow… [+2809 chars]`;
-  const prompt = `
-    You are an editor. Consider an article with title: ${title} ,short description: 
-    ${desc} and long description as ${long_desc}. Generate a fresh title and description for news which is accurate but same 
-    time very catchy to read. Return response as json as below - {title: '', desc: '', country: '', category: ''}
-  `
-  const result = await model.generateContent(prompt);
-  const response = await result.response;
-  const text = response.text();
-  res.send(text)
+  const systemKey = req.headers['system-id'];
+  if(!systemKey || systemKey != 'rcd91200'){
+    res.status(401).send('You are not authorized to run this job');
+    return;
+  }
+  const news = await fetchNewsWhichNeedToBeUpdated(); 
+  for(const article of news){
+    console.log(article.id);
+    const articleMeta = await fetchMetaData(article.title,article.short_desc,article.content,article.id);
+    await enrichArticle(articleMeta);
+  }
+  res.send("enrichment succeeded");
 });
 
 app.listen(port, () => {

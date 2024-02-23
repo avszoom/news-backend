@@ -7,8 +7,12 @@ export default class News {
     media_url: string = "";
     content: string = "";
     publish_time: string = "";
+    id: number = 0;
+    country: string = "";
+    is_updated: number = 0;
 
-    constructor(source: string,author:string,title:string,short_desc:string,article_url:string,media_url:string,content:string,publish_time:string) {
+    constructor(source: string,author:string,title:string,short_desc:string,article_url:string,
+        media_url:string,content:string,publish_time:string) {
         this.source = source;
         this.article_url = article_url;
         this.author = author;
