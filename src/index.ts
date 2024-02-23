@@ -49,13 +49,15 @@ app.get('/enrichArticles', async (req,res) => {
   const key = process.env.GOOGLE_API_KEY ?? "";
   const genAI = new GoogleGenerativeAI(key);
   const model = genAI.getGenerativeModel({ model: "gemini-pro"});
-  const title = "Nifty touches new life high, sensex nears all-time peak"
-  const desc = `Get the latest news and updates on Nifty touching new life high. 
-  Stay informed about the stock market and financial trends. Read more on our website.`
+  const title = "Jayo Archer, Motocross star and X Games medalist, dies at 27 - ESPN"
+  const desc = `Freestyle motocross athlete Jayden "Jayo" Archer, an X Games medalist and the first rider 
+  to perform a triple backflip in competition, died Wednesday morning in Melbourne, Australia. He was 27.`
+  const long_desc = `Freestyle motocross athlete Jayden "Jayo" Archer, an X Games medalist and the first rider to perform a triple backflip in competition, 
+  died while practicing the trick Wednesday morning in his hometow… [+2809 chars]`;
   const prompt = `
-    You are an editor. Consider an article with title: ${title} and description: 
-    ${desc}. Generate a fresh title and description for news which is accurate but same 
-    time very catchy to read. Return response as json in format {title: title, desc: desc}
+    You are an editor. Consider an article with title: ${title} ,short description: 
+    ${desc} and long description as ${long_desc}. Generate a fresh title and description for news which is accurate but same 
+    time very catchy to read. Return response as json as below - {title: '', desc: '', country: '', category: ''}
   `
   const result = await model.generateContent(prompt);
   const response = await result.response;
