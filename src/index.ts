@@ -48,12 +48,16 @@ app.get('/enrichArticles', async (req,res) => {
   //   res.status(401).send('You are not authorized to run this job');
   //   return;
   // }
-  const news = await fetchNewsWhichNeedToBeUpdated(2); 
+  const news = await fetchNewsWhichNeedToBeUpdated(100); 
+  var articlePushed = 0;
   for(const article of news){
+    if(articlePushed == 2)
+      break;
     try {
       const articleMeta = await fetchMetaData(article.title,article.short_desc,article.content,article.id);
       await enrichArticle(articleMeta);
       console.log(`inserted ${article.id}`);
+      articlePushed+=1;
     } catch (e) {
       console.log(e);
     }
