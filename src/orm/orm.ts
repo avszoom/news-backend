@@ -55,3 +55,10 @@ export async function enrichArticle(article:ArticleMetaData) {
         is_updated=1 where id=${article.id}`;
     console.log("inserted");
 }
+
+export async function markArticleBad(id:number) {
+    await sql
+        `update news
+        set is_updated=3 where id=${id}`;
+    console.log("marked bad");
+}
