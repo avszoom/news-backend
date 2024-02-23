@@ -10,6 +10,7 @@ export async function updateDatabase(): Promise<number> {
     const articles = await news.getTodaysNews(fromDate,toDate);
     //update short_desc with gen AI summary
     await insertNews(articles);
+    console.log(articles)
     return articles.length;
 }
 

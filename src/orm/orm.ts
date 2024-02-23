@@ -24,7 +24,7 @@ export async function lastInsertedRecordTime(): Promise<string> {
 }
 
 export async function fetchNews(news_count: number): Promise<News[]> {
-    const articles = await sql<News>`select * from news order by publish_time desc limit ${news_count}`;
+    const articles = await sql<News>`select * from news order by publish_time asc limit ${news_count}`;
     return articles.rows;
 }
 
@@ -35,7 +35,7 @@ export async function deleteRecords(rowsToKeep: number): Promise<number> {
         FROM (
             SELECT id
             FROM news
-            ORDER BY publish_time DESC
+            ORDER BY publish_time ASC
             LIMIT ${rowsToKeep}
         ) AS subquery
     );`;
