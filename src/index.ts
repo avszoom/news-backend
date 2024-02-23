@@ -43,11 +43,11 @@ app.get('/cron', async (req,res) => {
 );
 
 app.get('/enrichArticles', async (req,res) => {
-  // const systemKey = req.headers['system-id'];
-  // if(!systemKey || systemKey != 'rcd91200'){
-  //   res.status(401).send('You are not authorized to run this job');
-  //   return;
-  // }
+  const systemKey = req.headers['system-id'];
+  if(!systemKey || systemKey != 'rcd91200'){
+    res.status(401).send('You are not authorized to run this job');
+    return;
+  }
   const news = await fetchNewsWhichNeedToBeUpdated(2); 
   for(const article of news){
     try {
