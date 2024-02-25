@@ -10,12 +10,12 @@ export default class NewsAPI {
 
     public async getTodaysNews(fromDate: string, toDate: string): Promise<Array<News>>  {
         const resp = await this.news_obj.v2.everything({
-            sources: 'google-news,the-verge,the-times-of-india,espn',
+            sources: 'google-news,the-times-of-india',
             from: fromDate,
             to: toDate,
             language: 'en',
             sortBy: 'popularity',
-            page: 2
+            page: 1
           });
         const news = resp.articles.map((article: any) => {
             return new News(article.source.name, article.author,article.title,article.description,

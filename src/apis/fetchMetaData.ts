@@ -14,7 +14,7 @@ export default async function fetchMetaData(title:string, desc: string, long_des
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
     const prompt = `
         You are an editor. Consider an article with title: ${title} ,short description: 
-        ${desc} and long description as ${long_desc}. Generate a fresh title and description for news which is accurate but same 
+        ${desc} and long description as ${long_desc}. Generate a fresh title and detail description for news which is accurate but same 
         time very catchy to read. Return response as json as below - {title: '', desc: '', country: '', category: ''}
     `
     const result = await model.generateContent(prompt);
